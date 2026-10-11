@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = { darkMode: "class", theme: { extend: { colors: { "background": "#fff8f7", "surface-container-low": "#fff0ee", "primary-container": "#2563eb", "on-primary": "#ffffff", "surface": "#fff8f7", "on-surface": "#410002", "on-surface-variant": "#434655", "primary": "#004ac6" }, fontFamily: { "headline-sm": ["Quicksand"], "label-sm": ["Quicksand"], "body-md": ["Quicksand"] } } } }
+  </script>
+  <style>
+    body { font-family: 'Quicksand', sans-serif; }
+    .pt-safe { padding-top: max(32px, env(safe-area-inset-top)); }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex flex-col min-h-screen">
+  
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
+    <div class="h-20 px-4 flex items-center justify-center max-w-[500px] mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpg" alt="Logótipo" class="w-12 h-12 rounded-full object-cover bg-white border border-gray-200">
+        <h1 class="font-bold text-xl leading-tight">Cores & Números</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex flex-col w-full pt-36 px-4 flex-1 max-w-[400px] mx-auto items-center">
+    
+    <!-- Card de Instruções -->
+    <div class="bg-white w-full rounded-3xl p-6 shadow-[0_8px_24px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col gap-6">
+      
+      <div class="text-center">
+        <h2 class="font-bold text-2xl text-on-surface mb-2">Como Brincar?</h2>
+        <p class="text-on-surface-variant font-medium text-sm">Siga os passos abaixo para preparar o seu jogo.</p>
+      </div>
+
+      <div class="flex flex-col gap-5 mt-2">
+        <!-- Passo 1 -->
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg shadow-sm">1</div>
+          <div>
+            <h3 class="font-bold text-on-surface text-base">Separe as cartas</h3>
+            <p class="text-sm text-on-surface-variant mt-0.5">Selecione as cartas físicas do seu baralho e coloque-as espalhadas na mesa.</p>
+          </div>
+        </div>
+        
+        <!-- Passo 2 -->
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold text-lg shadow-sm">2</div>
+          <div>
+            <h3 class="font-bold text-on-surface text-base">Escolha no App</h3>
+            <p class="text-sm text-on-surface-variant mt-0.5">Na próxima tela, marque exatamente os mesmos números e cores que você colocou na mesa.</p>
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 shrink-0 rounded-full bg-yellow-100 text-yellow-700 flex items-center justify-center font-bold text-lg shadow-sm">3</div>
+          <div>
+            <h3 class="font-bold text-on-surface text-base">Sorteie e Procure!</h3>
+            <p class="text-sm text-on-surface-variant mt-0.5">Aperte o botão para sortear. Quem achar a carta correspondente na mesa primeiro, ganha a rodada!</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botão de Iniciar -->
+    <button onclick="window.location.href='selecao.html'" class="w-full mt-8 h-[64px] rounded-full bg-primary-container text-on-primary font-bold text-xl flex items-center justify-center gap-3 shadow-[0_6px_0_0_#1d4ed8] active:translate-y-1 active:shadow-[0_2px_0_0_#1d4ed8] transition-all cursor-pointer outline-none">
+      <span class="material-symbols-outlined text-[28px]">rocket_launch</span>
+      COMEÇAR
+    </button>
+
+  </main>
+  
+  <!-- Footer -->
+<footer class="w-full text-center pb-8 pt-12 mt-auto">
+  <p class="font-label-sm text-on-surface-variant/80 text-[13px]">
+    Psicopedagogia Salvador © 2026.
+  </p>
+  <p class="font-label-sm text-on-surface-variant/50 text-[11px] mt-1">
+    Bruno Pinheiro Desenvolvimento
+  </p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = { darkMode: "class", theme: { extend: { colors: { "background": "#fff8f7", "surface-container-low": "#fff0ee", "primary-container": "#2563eb", "on-primary": "#ffffff", "surface": "#fff8f7", "on-surface": "#410002", "on-surface-variant": "#434655" }, fontFamily: { "headline-sm": ["Quicksand"], "label-sm": ["Quicksand"], "body-md": ["Quicksand"] } } } }
+  </script>
+  <style>
+    body { font-family: 'Quicksand', sans-serif; }
+    .card-btn { transition: all 0.2s; }
+    .card-btn.selected { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-width: 3px; }
+    .card-btn.unselected { opacity: 0.5; filter: grayscale(0.8); }
+    .pt-safe { padding-top: max(32px, env(safe-area-inset-top)); }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased flex flex-col min-h-screen pb-24">
+  <header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]">
+    <div class="h-20 px-4 flex items-center justify-between max-w-[500px] mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <img src="logo.jpg" alt="Logótipo" class="w-12 h-12 rounded-full object-cover bg-white border border-gray-200">
+        <div class="flex flex-col">
+          <h1 class="font-bold text-xl leading-tight">Escolha as Cartas</h1>
+          <span class="text-sm text-on-surface-variant font-medium">Selecione as mesmas cartas que estão na mesa</span>
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center cursor-pointer shrink-0" onclick="window.location.href='index.html'" title="Voltar para as instruções">
+        <span class="material-symbols-outlined text-white text-[18px]">arrow_back</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex flex-col w-full pt-32 px-4 flex-1 max-w-[500px] mx-auto" id="colors-container">
+    
+    <!-- NOVO: Indicador visual para rolar a tela -->
+    <div class="flex items-center justify-center gap-2 mb-2 text-on-surface-variant animate-bounce">
+      <span class="text-sm font-bold opacity-80">Deslize para baixo para ver mais</span>
+      <span class="material-symbols-outlined text-[18px] opacity-80">arrow_downward</span>
+    </div>
+
+    <!-- As cores e botões serão gerados pelo JS aqui -->
+  </main>
+
+  <div class="fixed bottom-0 w-full bg-surface-container-low border-t border-gray-200 p-4 pb-8 shadow-[0_-4px_16px_rgba(0,0,0,0.05)] flex flex-col items-center z-50">
+    <p id="selection-count" class="text-sm font-bold text-on-surface-variant mb-2">0 cartas selecionadas</p>
+    <button id="btn-avancar" class="w-full max-w-[340px] h-[60px] rounded-full bg-primary-container text-on-primary font-bold text-lg flex items-center justify-center gap-2 shadow-[0_4px_0_0_#1d4ed8] active:translate-y-1 active:shadow-[0_0_0_0_#1d4ed8] transition-all cursor-pointer opacity-50" disabled>
+      <span class="material-symbols-outlined">play_arrow</span>
+      IR PARA O JOGO
+    </button>
+  </div>
+
+  <script>
+    const colorsConfig = [
+      { id: 'AMARELO', hex: '#f59e0b', border: '#b45309', text: 'text-yellow-700' },
+      { id: 'AZUL', hex: '#2563eb', border: '#1d4ed8', text: 'text-blue-700' },
+      { id: 'VERDE', hex: '#16a34a', border: '#15803d', text: 'text-green-700' },
+      { id: 'VERMELHO', hex: '#dc2626', border: '#b91c1c', text: 'text-red-700' }
+    ];
+
+    let selectedCards = [];
+
+    function toggleCard(colorId, number, btnElement) {
+      const cardIndex = selectedCards.findIndex(c => c.color === colorId && c.number === number);
+      
+      if (cardIndex > -1) {
+        selectedCards.splice(cardIndex, 1);
+        btnElement.classList.remove('selected');
+        btnElement.classList.add('unselected');
+        btnElement.style.borderColor = 'transparent';
+      } else {
+        selectedCards.push({ color: colorId, number: number });
+        btnElement.classList.remove('unselected');
+        btnElement.classList.add('selected');
+        const colorData = colorsConfig.find(c => c.id === colorId);
+        btnElement.style.borderColor = colorData.border;
+      }
+      
+      updateBottomBar();
+    }
+
+    function updateBottomBar() {
+      const btnAvancar = document.getElementById('btn-avancar');
+      const countText = document.getElementById('selection-count');
+      
+      countText.textContent = `${selectedCards.length} carta${selectedCards.length !== 1 ? 's' : ''} selecionada${selectedCards.length !== 1 ? 's' : ''}`;
+      
+      if (selectedCards.length > 0) {
+        btnAvancar.disabled = false;
+        btnAvancar.classList.remove('opacity-50');
+      } else {
+        btnAvancar.disabled = true;
+        btnAvancar.classList.add('opacity-50');
+      }
+    }
+
+    function renderBoard() {
+      const container = document.getElementById('colors-container');
+      
+      colorsConfig.forEach(color => {
+        const section = document.createElement('div');
+        section.className = 'mb-6 bg-white p-4 rounded-xl shadow-sm border border-gray-100';
+        
+        const title = document.createElement('h2');
+        title.className = `font-bold text-lg mb-3 flex items-center gap-2 uppercase tracking-wide ${color.text}`;
+        title.innerHTML = `<span class="w-4 h-4 rounded-full shadow-sm" style="background-color: ${color.hex}"></span> ${color.id}`;
+        
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-5 gap-2';
+        
+        for (let i = 1; i <= 9; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'card-btn unselected w-full aspect-[3/4] rounded-lg font-bold text-xl flex items-center justify-center text-white';
+          btn.style.backgroundColor = color.hex;
+          btn.textContent = i;
+          btn.onclick = () => toggleCard(color.id, i, btn);
+          grid.appendChild(btn);
+        }
+        
+        section.appendChild(title);
+        section.appendChild(grid);
+        container.appendChild(section);
+      });
+    }
+
+    document.getElementById('btn-avancar').addEventListener('click', () => {
+      // Salva as cartas escolhidas na memória do navegador
+      localStorage.setItem('cartasSelecionadas', JSON.stringify(selectedCards));
+      // Redireciona para o arquivo jogo.html
+      window.location.href = 'jogo.html'; 
+    });
+
+    renderBoard();
+  </script>
+</body>
+</html>
